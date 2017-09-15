@@ -1,19 +1,63 @@
-bg_image_replace(".card-image a img", ".card-image a");
+// AFFIX LOWER NAVBAR ON SCROLL
+$(window).scroll(function() {
+    var scroll = $(window).scrollTop();
+    if (scroll >= 64) {
+        $(".navbar-lower").addClass("navbar-fixed");
+    }
+    else {
+        $(".navbar-lower").removeClass("navbar-fixed");
+    }
+});
 
-function bg_image_replace(image, parent){
-    $(image).each(function(index,elem){
 
-        var src = $(elem).attr("src"),
-            $parent = $(elem).closest(parent);
+// FADE IN SMALL LOGO AND FAB ON SCROLL
+$(window).scroll(function() {
+    var scrollPosition = $(this).scrollTop();
+    var $fadeInLogo = $('.fadeInLogo');
+    var $growInFab = $('.halfway-fab');
+    if (scrollPosition > 128) {
+        // Fade in logo & bring in FAB
+        $fadeInLogo.fadeIn(200);
+        $growInFab.removeClass("scale-out");
+    } else {
+        // Fade out logo & remove FAB
+        $fadeInLogo.fadeOut(200);
+        $growInFab.addClass("scale-out");
+    }
+});
 
-        $parent.css("background-image","url(" + src + ")");
-    });
-}
 
+// MODAL
+$(document).ready(function(){
+    $('.modal').modal();
+});
 
-/* Review */
-$( '.card-image' ).mouseover(function(){
-    $('#hov_<%= @question.id%>').fadeIn(100).toggleClass('active');
-}).mouseout(function(){
-    $('#hov_<%= @question.id%>').fadeOut(100).toggleClass('active');
+// DROPDOWNS
+$(document).ready(function(){
+    $(".dropdown-button").dropdown(
+        {
+            belowOrigin: true
+        }
+    );
+});
+
+//TABS
+$(document).ready(function(){
+    $('ul.tabs').tabs();
+});
+
+//SCROLLSPY
+$(document).ready(function(){
+    $('.scrollspy').scrollSpy();
+});
+
+// SIDEBAR
+$(document).ready(function(){
+    $('.button-collapse').sideNav({
+            menuWidth: 300, // Default is 300
+            edge: 'left', // Choose the horizontal origin
+            closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+            draggable: true // Choose whether you can drag to open on touch screens
+        }
+    );
 });

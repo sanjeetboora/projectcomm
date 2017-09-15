@@ -1,43 +1,704 @@
 <p id="notice"><%= notice %></p>
+    <!DOCTYPE html>
+    <html >
+    <head>
+      <meta charset="UTF-8">
+      <title>Affix a Materialize Navbar on scroll</title>
 
-<p>
-  <strong>Title:</strong>
-  <%= @question.title %>
-</p>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
-<p>
-  <strong>Content:</strong>
-  <%= @question.content %>
-</p>
+      <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css'>
+      <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+      <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+      <%= stylesheet_link_tag 'questionlist', media: 'all', 'data-turbolinks-track' => true %>
 
-<p>
-  <strong>User:</strong>
-  <%= @question.user.email %>
-</p>
-<%if can? :update,@question%>
- <%= link_to 'Edit', edit_question_path(@question) %> |
-<%end%>
-<%= link_to 'Back', 'home/index'%>
+    </head>
 
-<div class="createAnswer">
-   <%= form_for @answer, :url => answers_path(question_id:@question.id), remote: true do |task|%>
-      <%= task.label :content %><br>
-      <%= task.text_area :content %><br>
-      <div class="actions">
-        <%= task.submit id: 'create_answer_submit'%>
+    <body>
+    <div class="navbar-upper">
+      <nav class="z-depth-0">
+        <div class="nav-wrapper">
+          <div class="row">
+            <div class="col s12">
+              <a href="#modal1" class="brand-logo" style="display:block;float:left;">Materialize framework</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+                <li>
+
+                  <form style="height:64px;">
+                    <div class="input-field ">
+                      <input id="search" type="search" required placeholder="Search">
+                      <label class="label-icon" for="search"><i class="this material-icons">search</i></label>
+                      <!--                   <i class="material-icons" style="">close</i> -->
+                    </div>
+                  </form>
+
+                </li>
+
+                <li><a class="waves-effect waves-light btn btn-large animated tada" href="#modal2"><i class="material-icons left">create</i>ASK!</a></li>
+                <li><a href="#sheet1"><i class="material-icons">more_vert</i></a></li>
+
+              </ul>
+
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+
+
+
+    <div class="navbar-lower">
+      <nav class="z-depth-0 nav-extended">
+        <div class="nav-wrapper">
+          <div class="row">
+            <div class="col s12">
+              <a href="#" data-activates="mobile-demo" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
+              <a class="fadeInLogo brand-logo animated slideInUp">
+                <!-- M -->
+                <!-- <img src="https://materializecss.com/res/materialize.svg" alt="" style="margin-top:12px;" height="40px"/> -->
+                <i class="large material-icons">important_devices</i>
+              </a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#modal1">Home</a></li>
+                <li class="active"><a href="#modal1">About</a></li>
+                <li><a href="#modal1">Team</a></li>
+                <li><a href="#modal1">Blog</a></li>
+                <li><a href="#modal1">Resources</a></li>
+                <%if user_signed_in?%>
+                <li><%= link_to "Sign Out",destroy_user_session_path,method: :delete%></li>
+
+                  <%end%>
+
+                <li><a href="#!" class="dropdown-button" data-activates="dropdown1">Contact<i class="material-icons right">arrow_drop_down</i></a></li>
+              </ul>
+            </div>
+            <div class="nav-content ">
+              <div class="col s12 nav-content red lighten-3">
+                <ul class="tabs tabs-transparent ">
+                  <li class="tab"><a href="#tab1" class="active">FEED</a></li>
+                  <li class="tab"><a href="#tab2">TRENDING</a></li>
+                  <li class="tab"><a href="#tab3">Third one</a></li>
+                  <li class="tab"><a href="#tab4">Fourth tab</a></li>
+                </ul>
+                <ul class="side-nav grey darken-2" id="mobile-demo">
+
+
+                  <li class="sidenav-header red lighten-2">
+                    <div class="row">
+                      <div class="col s4">
+                        <!-- profile image -->
+
+                        <%if user_signed_in?%>
+                        <div class="circle responsive-img valign profile-image" style="border-radius:50"><%=avatar_for(current_user,size:24)%></div>
+                          <!-- <img src="<%=link_to(avatar_for(current_user,size: 35),current_user)%>" width="48px" height="48px" alt="" class="circle responsive-img valign profile-image">
+    -->
+                          <%else%>
+                          <img src="https://gravatar.com/avatar/961997eb7fd5c22b3e12fb3c8ca14e11?s=80&d=https://codepen.io/assets/avatars/user-avatar-80x80-bdcd44a3bfb9a5fd01eb8b86f9e033fa1a9897c3a15b33adfc2649a002dab1b6.png" width="48px" height="48px" alt="" class="circle responsive-img valign profile-image">
+                          <%end%>
+
+                      </div>
+                      <div class="col s8">
+                        <a class="btn-flat dropdown-button waves-effect waves-light white-text" href="#" data-activates="profile-dropdown">Jay<i class="mdi-navigation-arrow-drop-down right"></i></a>
+                        <ul id="profile-dropdown" class="dropdown-content">
+                          <li><a href="#"><i class="material-icons">person</i>Profile</a></li>
+                          <li><a href="#"><i class="material-icons">settings</i>Setting</a></li>
+                          <li><a href="#"><i class="material-icons">help</i>Help</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#"><i class="material-icons">lock</i>Lock</a></li>
+                          <li><a href="#"><i class="material-icons">exit_to_app</i>Logout</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="red lighten-2">
+                    <ul class="collapsible collapsible-accordion">
+                      <li>
+                        <a class="collapsible-header white-text waves-effect waves-blue "><i class="material-icons white-text ">language</i>Language <i class="material-icons right white-text" style="margin-right:0;">arrow_drop_down</i></a>
+                        <div class="collapsible-body z-depth-3">
+                          <ul>
+                            <li><a class="waves-effect waves-blue" href="#">English</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">العربية</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">中文</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Čeština</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Nederlands</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Français</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Deutsch</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">한국어</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Português</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Русский</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Español</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Svenska</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">ภาษาไทย</a></li>
+                            <li><a class="waves-effect waves-blue" href="#">Türkçe</a></li>
+                            <li><div class="divider"></div></li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+
+
+
+                  <li class="white">
+                    <ul class="collapsible collapsible-accordion">
+                      <li>
+                        <a class="collapsible-header waves-effect waves-blue"><i class="material-icons">folder_special</i>Layouts <i class="material-icons right" style="margin-right:0;">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                          <ul>
+                            <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">fullscreen</i>Full Screen<span class="new badge right yellow grey lighten-1" data-badge-caption="updated"></span></a></li>
+                            <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">swap_horiz</i>Horizontal Menu<span class="new badge right yellow darken-3"></span></a></li>
+                            <li><div class="divider"></div></li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="white">
+                    <ul class="collapsible collapsible-accordion">
+                      <li>
+                        <a class="collapsible-header waves-effect waves-blue"><i class="material-icons">folder_open</i>A submenu <i class="material-icons right" style="margin-right:0;">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                          <ul>
+                            <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">fullscreen</i>Full Screen</a></li>
+                            <li><a class="waves-effect waves-blue" href="#"><i class="material-icons">swap_horiz</i>Horizontal Menu</a></li>
+                            <li><div class="divider"></div></li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">mail</i>Menu item</a></li>
+                  <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">call</i> Menu item</a></li>
+                  <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">android</i> Menu item</a></li>
+                  <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">dialpad</i> Menu item</a></li>
+                  <li class="white"><div class="divider"></div></li>
+                  <li class="white"><a href="#" class="waves-effect waves-blue"><i class="material-icons">language</i> Menu item<span class="new badge right yellow darken-3"></span></a></li>
+
+                  <li class="sidenav-footer grey darken-2">
+                    <div class="row">
+                      <div class="social-icons">
+                        <div class="col s2">
+                          <a href="#"><i class="fa fa-lg fa-linkedin-square"></a></i>
+                        </div>
+                        <div class="col s2">
+                          <a href="#"><i class="fa fa-lg fa-facebook-official"></a></i>
+                        </div>
+                        <div class="col s2">
+                          <a href="#"><i class="fa fa-lg fa-twitter"></a></i>
+                        </div>
+                        <div class="col s2">
+                          <a href="#"><i class="fa fa-lg fa-google-plus"></a></i>
+                        </div>
+                        <div class="col s2">
+                          <a href="#"><i class="fa fa-lg fa-pinterest"></a></i>
+                        </div>
+                        <div class="col s2">
+                          <a href="#"><i class="fa fa-lg fa-youtube"></a></i>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Dropdown Structure -->
+          <ul id="dropdown1" class="dropdown-content">
+            <li><a href="#!">A really long item here</a></li>
+            <li><a href="#!">two</a></li>
+            <!-- <li class="divider"></li> -->
+            <li><a href="#!">grade</i>three</a></li>
+          </ul>
+
+
+          <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal hide-on-med-and-down scale-transition scale-out pulse" href="#modal1">
+            <i class="material-icons">call</i>
+          </a>
+
+        </div>
+      </nav>
+    </div>
+
+
+
+    <div id="tab1" class="col s12">
+
+      <section id="photo-bg" class="red lighten-4">
+        <div class="container">
+          <div class="row">
+            <div class="col s12" style="margin-bottom: 40px">
+              <h1 class="header center-on-small-only white-text">A demonstration</h1>
+              <h4 class="light white-text text-lighten-4 center-on-small-only">Learning about the Materialize framework.</h4>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
+<style media="screen">
+.card {
+     position: relative;
+     background: #fff;
+     margin-bottom: 30px;
+     border-radius: 2px;
+     -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+             box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+ }
+ .card[shadow='none'] {
+     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+     -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+     -moz-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+ }
+ .card[single-card] {
+     height: calc(100vh - 125px);
+     max-height: calc(100vh - 125px);
+     margin-bottom: 0;
+ }
+ .card.table, .card[table] {
+     display: table;
+     width: 100%;
+     padding-bottom: 30px;
+ }
+ .card-header {
+     position: relative;
+     padding: 30px;
+     border-radius: 2px 2px 0 0;
+ }
+ .card-header.card-border {
+     box-shadow: inset 0 -1px 0 0 #eeeeee;
+ }
+ .card-header h2 {
+     margin: 0;
+     line-height: 100%;
+     font-size: 17px;
+     font-weight: 400;
+ }
+ .card-header h2 small {
+     display: block;
+     margin-top: 10px;
+     line-height: 160%;
+     font-size: 12px;
+     color: #AEAEAE;
+ }
+ .card.c-dark .card-header > h2 {
+     color: rgba(255, 255, 255, 1);
+ }
+ .card.c-dark .card-header > h2 small {
+     color: rgba(255, 255, 255, 0.7);
+ }
+ .card > .actions, .card-header .actions {
+     position: absolute;
+     right: 20px;
+     z-index: 1;
+     top: 25px;
+ }
+ .card.c-dark .card-header .actions i {
+     color: rgba(255, 255, 255, 0.7);
+ }
+ .card-body.card-padding {
+     padding: 30px;
+ }
+ .card .card-padding[no-padding*='top'] {
+     padding-top: 0;
+ }
+ .card .card-padding[no-padding*='right'] {
+     padding-right: 0;
+ }
+ .card .card-padding[no-padding*='bottom'] {
+     padding-bottom: 0;
+ }
+ .card .card-padding[no-padding*='left'] {
+     padding-left: 0;
+ }
+ .card-body.card-padding[padding-size='sm'] {
+     padding: 20px;
+ }
+ .card-body.card-padding[padding-size='xs'] {
+     padding: 10px;
+ }
+ .card .card-footer {
+     width: 100%;
+     color: rgb(94, 94, 94);
+ }
+ .card-footer.card-border {
+     box-shadow: inset 0 1px 0 0 #eeeeee;
+ }
+ .card .card-footer.c-dark {
+     color: rgb(255, 255, 255);
+ }
+ .card .card-footer:not(.c-dark).hover {
+     background-color: #EFEFEF;
+ }
+ .card .card-footer.card-padding {
+     padding: 10px 20px;
+ }
+ .card .card-footer:not(.c-dark) .btn {
+     color: rgb(94, 94, 94);
+     font-size: 14px;
+     font-weight: 500;
+ }
+ .card .card-footer:not(.c-dark) .btn:hover {
+     background-color: #EFEFEF;
+ }
+ .card .card-footer.c-dark .btn {
+     color: rgb(255, 255, 255);
+     font-size: 14px;
+     font-weight: 500;
+ }
+ .card .card-footer.c-dark .btn:hover {
+     background-color: rgba(0, 0, 0,.1);
+ }
+ .card .card-footer .btn:hover, .card .card-footer .btn:focus {
+     text-decoration: none;
+ }
+
+
+/* COLOR SCHEMA */
+ .bg-blue-gray {
+     background-color: #607D8B;
+ }
+ .c-white, .c-fff {
+     color: #fff;
+ }
+
+</style>
+
+        <div horizontal-columns="1">
+             <div class="column">
+               <div class="card c-dark">
+                 <div class="card-header bg-blue-gray">
+                   <h2>
+                       <%= @question.title %>
+                     <small>
+                         <%= @question.user.email %>
+                     </small>
+                   </h2>
+                   <ul class="actions">
+                           <li>
+                               <a href="">
+                                   <i class="zmdi zmdi-labels"></i>
+                               </a>
+                           </li>
+                           <li>
+                               <a href="">
+                                   <i class="zmdi zmdi-refresh-alt"></i>
+                               </a>
+                           </li>
+                           <li class="dropdown">
+                               <a href="" data-toggle="dropdown">
+                                   <i class="zmdi zmdi-more-vert"></i>
+                               </a>
+                               <ul class="dropdown-menu dropdown-menu-right">
+                                   <li>
+                                       <a href="">Action 1</a>
+                                   </li>
+                                   <li>
+                                       <a href="">Action 2</a>
+                                   </li>
+                                   <li>
+                                       <a href="">Action 3</a>
+                                   </li>
+                               </ul>
+                           </li>
+                       </ul>
+                 </div>
+                 <div class="card-body card-padding">
+                   <p>
+                       <%= @question.content %>
+                     </p>
+                 </div>
+                 <div class="card-footer card-padding c-dark bg-blue-gray">
+                   <%if can? :update,@question%>
+                   <button class="btn btn-link waves-effect"><%= link_to 'Edit', edit_question_path(@question) %></button>
+                   <%end%>
+                       <button class="btn btn-link waves-effect"><%= link_to 'Back', 'home/index'%></button>
+                 </div>
+               </div>
+             </div>
+
+        <div class="row">
+
+          <div id="answers">
+            <% @answerfeed.each do |answer| %>
+            <%= render 'answer' , answer: answer %>
+
+            <% end %>
+          </div>
+        </div>
       </div>
-      <% end %>
-      <% if @answer.errors.any? %>
-      <% @answer.errors.full_messages.each do |message| %>
-          <%= message %>
+    </div> <!-- /#tab1 -->
+
+
+
+    <div id="tab2" class="col s12">
+
+      <section class="red lighten-4" style="padding:1px;">
+        <div class="container">
+          <div class="row row-noclear">
+            <h1 class="header center-on-small-only">Tab 2 content</h1>
+            <h4 class="light text-lighten-4 center-on-small-only">Actually on the same page.</h4>
+
+            <article class="card col s12 m10" style="animation-duration: 0.5s;" class="animated bounceInUp">
+              <section class="card-content">
+                <nav class="nav-breadcrumbs-dark nav-transparent">
+                  <div class="nav-wrapper">
+                    <div class="col s12">
+                      <a href="#!" class="breadcrumb">First</a>
+                      <a href="#!" class="breadcrumb">Second</a>
+                      <a href="#!" class="breadcrumb">Third</a>
+                    </div>
+                  </div>
+                </nav>
+                <div class="card-content">
+                  <h2 id="introduction" class="card-title">Introduction</h2>
+                  <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                  <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas sed diam eget risus varius blandit sit amet non magna. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor.</p>
+                  <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Vestibulum id ligula porta felis euismod semper. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui.</p>
+                  <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+                  <h2 id="structure" class="card-title">Structure</h2>
+                  <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                  <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas sed diam eget risus varius blandit sit amet non magna. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor.</p>
+                  <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Vestibulum id ligula porta felis euismod semper. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui.</p>
+                  <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+                  <h2 id="#initialization" class="card-title">Initialization</h2>
+                  <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                  <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas sed diam eget risus varius blandit sit amet non magna. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor.</p>
+                  <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Vestibulum id ligula porta felis euismod semper. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui.</p>
+                  <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+                  <h2 id="#options" class="card-title">Options</h2>
+                  <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                  <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                  <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas sed diam eget risus varius blandit sit amet non magna. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Maecenas sed diam eget risus varius blandit sit amet non magna. Curabitur blandit tempus porttitor.</p>
+                  <p>Maecenas sed diam eget risus varius blandit sit amet non magna. Vestibulum id ligula porta felis euismod semper. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui.</p>
+                  <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Vestibulum id ligula porta felis euismod semper. Donec ullamcorper nulla non metus auctor fringilla. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+                </div>
+              </section>
+            </article>
+
+            <div class="col hide-on-small-only m2">
+              <ul class="section table-of-contents">
+                <li><a href="#introduction" class="active">Introduction</a></li>
+                <li><a href="#structure">Structure</a></li>
+                <li><a href="#initialization">Intialization</a></li>
+                <li><a href="#options">Options</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+      <div class="clearfix"></div>
+
+
+
+
+
+    </div> <!-- /tab2 -->
+
+
+
+    <div id="tab3" class="col s12">
+      <section class="red lighten-4">
+        <div class="container">
+          <div class="row">
+            <div class="col s12" style="margin-bottom: 40px">
+              <h1 class="header center-on-small-only white-text">Content on tab 3</h1>
+              <h4 class="light white-text text-lighten-4 center-on-small-only">It's on the same page too.</h4>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+
+    <div id="tab4" class="col s12">
+      <section class="red lighten-4">
+        <div class="container">
+          <div class="row">
+            <div class="col s12" style="margin-bottom: 40px">
+              <h1 class="header center-on-small-only white-text">The tab 4 content</h1>
+              <h4 class="light white-text text-lighten-4 center-on-small-only">Yup. Same page as well.</h4>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- MOBILE ONLY FLOATING ACTION BUTTON -->
+    <div class="fixed-action-btn hide-on-large-only">
+      <a class="btn-floating btn-large teal">
+        <i class="large material-icons">menu</i>
+      </a>
+      <ul>
+        <li><a href="#modal1" class="btn-floating teal lighten-3 tooltipped" data-tooltip="Share" data-position="left"><i class="material-icons">share</i></a></li>
+        <li><a href="#modal1" class="btn-floating teal lighten-2 tooltipped" data-tooltip="Start chat" data-position="left"><i class="material-icons">chat</i></a></li>
+        <li><a href="#modal1" class="btn-floating teal lighten-1 tooltipped" data-tooltip="Save contact" data-position="left"><i class="material-icons">file_download</i></a></li>
+        <li><a href="#modal1" class="btn-floating teal tooltipped" data-tooltip="Call" data-position="left"><i class="material-icons">call</i></a></li>
+      </ul>
+    </div>
+
+
+
+    <!-- MODAL -->
+
+    <div id="modal2" class="modal">
+      <div class="createAnswer">
+      <div class="modal-content">
+        <%= form_for @answer, :url => answers_path(question_id:@question.id), remote: true do |task|%>
+
+           <div class="input-field col s12">
+        <%= task.text_area :content, class:'validate',id:'content' %><br>
+          <%= task.label :content, for:'content' %><br>
+     </div>
+
+            <div class="actions">
+              <div class="modal-footer">
+              </div>
+              <%= task.submit id: 'create_answer_submit', class:"modal-action modal-close waves-effect waves-red btn-flat" %>
+            </div>
         <% end %>
-      <% end %>
-</div>
+        <% if @answer.errors.any? %>
+        <% @answer.errors.full_messages.each do |message| %>
+            <%= message %>
+          <% end %>
+        <% end %>
+        </div>
+
+    </div>
+    </div>
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <h4>Just a demo</h4>
+        <p>Try resizing your window width to see the responsive features. Be sure to try scrolling down as well.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Ok</a>
+      </div>
+    </div>
 
 
-<div id="answers">
-  <% @answerfeed.each do |answer| %>
-  <%= render 'answer' , answer: answer %>
 
-  <% end %>
-</div>
+    <!-- Modal Structure -->
+    <div id="sheet1" class="modal bottom-sheet">
+      <div class="modal-content">
+        <h5>Modal Header</h5>
+
+        <div class="row">
+          <div class="col s3 m2 l1">
+            <img src="http://placehold.it/640" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+          </div>
+          <div class="col s3 m2 l1">
+            <img src="http://placehold.it/640" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+          </div>
+          <div class="col s3 m2 l1">
+            <img src="http://placehold.it/640" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+          </div>
+          <div class="col s3 m2 l1">
+            <img src="http://placehold.it/640" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <footer class="page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col m6 l6 s12">
+            <h5 class="white-text">Footer Content</h5>
+            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+          </div>
+          <div class="col m6 l4 offset-l2 s12">
+            <h5 class="white-text">Links</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          © 2017 Copyright Text
+          <span class="right">
+          <a class="grey-text text-lighten-4" href="#!">Privacy Policy</a>
+          &nbsp;|&nbsp;
+          <a class="grey-text text-lighten-4" href="#!">Terms & Conditions</a>
+        </span>
+        </div>
+      </div>
+    </footer>
+
+
+
+
+
+
+    <!-- Visual Breakpoint Helper for Materialize - http://materializecss.com/ -->
+    <div style="position:fixed;bottom:0;left:0;background-color:rgba(0,0,0,0.5);padding:10px;color:#fff;z-index: 99999999;">
+      <span class="hide-on-med-only hide-on-large-only">Small</span>
+      <span class="hide-on-small-only hide-on-large-only">Tablet</span>
+      <span class="hide-on-small-only hide-on-med-only">Desktop</span>
+    </div>
+
+
+
+
+    <!-- TRANSIFEX MOCKUP LANGUAGE CHOOSER -->
+    <div id="tx-live-lang-container" class="txlive-langselector txlive-langselector-bottomright"><ul id="tx-live-lang-picker" class="txlive-langselector-list notranslate"><li data-value="en">English</li><li data-value="ar">العربية</li><li data-value="zh">中文</li><li data-value="cs">Čeština</li><li data-value="nl">Nederlands</li><li data-value="fr">Français</li><li data-value="de">Deutsch</li><li data-value="ko">한국어</li><li data-value="pt">Português</li><li data-value="ru">Русский</li><li data-value="es">Español</li><li data-value="sv">Svenska</li><li data-value="th">ภาษาไทย</li><li data-value="tr">Türkçe</li></ul><div class="txlive-langselector-toggle notranslate" id="tx-live-lang-toggle"><span class="txlive-langselector-current" id="tx-live-lang-current">English</span><span class="txlive-langselector-marker"></span></div></div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js'></script>
+    <%= javascript_include_tag 'questionlist', 'data-turbolinks-track' => true %>
+
+    </body>
+    </html>
+
+
+
+    <head>
+
+    </head>
